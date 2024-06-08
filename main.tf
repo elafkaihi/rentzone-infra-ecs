@@ -21,15 +21,24 @@ module "vpc" {
 
 #create nat gateway
 module "nat_gateway" {
-    source                       = "git@github.com:elafkaihi/terraform-modules.git//nat-gateway"
-    project_name = local.project_name
-    environment = local.environment
-    public_subnet_az1_id = module.vpc.public_subnet_az1_id
-    public_subnet_az2_id = module.vpc.public_subnet_az2_id
-    internet_gateway = module.vpc.internet_gateway
-    vpc_id = module.vpc.vpc_id
-    private_app_subnet_az1_id = module.vpc.private_app_subnet_az1_id
-    private_app_subnet_az2_id = module.vpc.private_app_subnet_az2_id
-    private_data_subnet_az1_id = module.vpc.private_data_subnet_az1_id
-    private_data_subnet_az2_id = module.vpc.private_data_subnet_az2_id
+  source                     = "git@github.com:elafkaihi/terraform-modules.git//nat-gateway"
+  project_name               = local.project_name
+  environment                = local.environment
+  public_subnet_az1_id       = module.vpc.public_subnet_az1_id
+  public_subnet_az2_id       = module.vpc.public_subnet_az2_id
+  internet_gateway           = module.vpc.internet_gateway
+  vpc_id                     = module.vpc.vpc_id
+  private_app_subnet_az1_id  = module.vpc.private_app_subnet_az1_id
+  private_app_subnet_az2_id  = module.vpc.private_app_subnet_az2_id
+  private_data_subnet_az1_id = module.vpc.private_data_subnet_az1_id
+  private_data_subnet_az2_id = module.vpc.private_data_subnet_az2_id
+}
+
+#create security groups
+module "security_groups" {
+  source       = "git@github.com:elafkaihi/terraform-modules.git//security-groups"
+  project_name = local.project_name
+  environment  = local.environment
+  vpc_id       = module.vpc.vpc_id
+  ssh_ip       = var.ssh_ip
 }
